@@ -11,26 +11,15 @@ export const config = {
 export default async function handler(req, res) {
   const signature = req.headers["stripe-signature"];
   const signingSecret = process.env.STRIPE_SIGNING_SECRET;
-
-  if (!signingSecret) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Stripe signing secret is missing" });
-  }
-
   let event;
+
   try {
     const rawBody = await getRawBody(req, { limit: "2mb" });
     event = stripe.webhooks.constructEvent(rawBody, signature, signingSecret);
     console.log("Stripe event received", event);
   } catch (error) {
     console.log(error, "Webhook signature verification failed.");
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: "Webhook signature verification failed",
-      });
+    return res.status(400).end();
   }
 
   try {
@@ -41,16 +30,12 @@ export default async function handler(req, res) {
       case "customer.subscription.deleted":
         await deleteSubscription(event);
         break;
-      default:
-        return res
-          .status(400)
-          .json({ success: false, message: "Unhandled event type" });
     }
 
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    res.status(400).json({ success: false, message: error.message });
+    res.send({ success: false });
   }
 }
 
@@ -59,7 +44,6 @@ async function updateSubscription(event) {
   const stripe_customer_id = subscription.customer;
   const subscription_status = subscription.status;
   const price = subscription.items.data[0].price.id;
-
   const { data: profile } = await supabase
     .from("profile")
     .select("*")
@@ -71,7 +55,6 @@ async function updateSubscription(event) {
       subscription_status,
       price,
     };
-
     await supabase
       .from("profile")
       .update(updatedSubscription)
@@ -80,7 +63,6 @@ async function updateSubscription(event) {
     const customer = await stripe.customers.retrieve(stripe_customer_id);
     const name = customer.name;
     const email = customer.email;
-
     const newProfile = {
       name,
       email,
@@ -88,7 +70,6 @@ async function updateSubscription(event) {
       subscription_status,
       price,
     };
-
     await supabase.auth.admin.createUser({
       email,
       email_confirm: true,
