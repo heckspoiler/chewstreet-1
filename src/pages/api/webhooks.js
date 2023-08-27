@@ -1,6 +1,6 @@
 import getRawBody from "raw-body";
 import { stripe } from "src/pricing/utils/stripe";
-import supabaseServer from "../../../supabase";
+import supabase from "../../../supabase";
 
 export const config = {
   api: {
@@ -11,15 +11,26 @@ export const config = {
 export default async function handler(req, res) {
   const signature = req.headers["stripe-signature"];
   const signingSecret = process.env.STRIPE_SIGNING_SECRET;
-  let event;
 
+  if (!signingSecret) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Stripe signing secret is missing" });
+  }
+
+  let event;
   try {
     const rawBody = await getRawBody(req, { limit: "2mb" });
     event = stripe.webhooks.constructEvent(rawBody, signature, signingSecret);
     console.log("Stripe event received", event);
   } catch (error) {
     console.log(error, "Webhook signature verification failed.");
-    return res.status(400).end();
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message: "Webhook signature verification failed",
+      });
   }
 
   try {
@@ -30,12 +41,16 @@ export default async function handler(req, res) {
       case "customer.subscription.deleted":
         await deleteSubscription(event);
         break;
+      default:
+        return res
+          .status(400)
+          .json({ success: false, message: "Unhandled event type" });
     }
 
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    res.send({ success: false });
+    res.status(400).json({ success: false, message: error.message });
   }
 }
 
@@ -45,20 +60,19 @@ async function updateSubscription(event) {
   const subscription_status = subscription.status;
   const price = subscription.items.data[0].price.id;
 
-  const { data: profile } = await supabaseServer
+  const { data: profile } = await supabase
     .from("profile")
     .select("*")
     .eq("stripe_customer_id", stripe_customer_id)
     .single();
-
-  console.log(profile ? `hello profile: ${profile}` : "no profile");
 
   if (profile) {
     const updatedSubscription = {
       subscription_status,
       price,
     };
-    await supabaseServer
+
+    await supabase
       .from("profile")
       .update(updatedSubscription)
       .eq("stripe_customer_id", stripe_customer_id);
@@ -66,6 +80,7 @@ async function updateSubscription(event) {
     const customer = await stripe.customers.retrieve(stripe_customer_id);
     const name = customer.name;
     const email = customer.email;
+
     const newProfile = {
       name,
       email,
@@ -74,26 +89,10 @@ async function updateSubscription(event) {
       price,
     };
 
-    const response = await supabaseServer.auth.admin.createUser({
+    await supabase.auth.admin.createUser({
       email,
       email_confirm: true,
       user_metadata: newProfile,
     });
-
-    console.log(response.error);
   }
-}
-
-async function deleteSubscription(event) {
-  const subscription = event.data.object;
-  const stripe_customer_id = subscription.customer;
-  const subscription_status = subscription.status;
-  const deletedSubscription = {
-    subscription_status,
-    price: null,
-  };
-  await supabaseServer
-    .from("profile")
-    .update(deletedSubscription)
-    .eq("stripe_customer_id", stripe_customer_id);
 }
