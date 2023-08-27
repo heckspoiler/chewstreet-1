@@ -2,7 +2,6 @@ import ProductCard from "src/products/components/Card";
 import { supabase } from "supabase";
 
 export default function ProductsPage({ products }) {
-  console.log(products);
   return (
     <>
       <div className="section bg-blue">

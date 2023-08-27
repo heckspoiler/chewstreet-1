@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     success_url: `${SITE_URL}/success`,
     cancel_url: `${SITE_URL}/pricing`,
   });
-  console.log(session);
+
   // the response of the session above is then sent to the frontend
   res.send({ id: session.id });
 }

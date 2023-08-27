@@ -16,6 +16,7 @@ export default async function handler(req, res) {
   try {
     const rawBody = await getRawBody(req, { limit: "2mb" });
     event = stripe.webhooks.constructEvent(rawBody, signature, signingSecret);
+    console.log("Stripe event received", event);
   } catch (error) {
     console.log(error, "Webhook signature verification failed.");
     return res.status(400).end();
@@ -49,6 +50,8 @@ async function updateSubscription(event) {
     .select("*")
     .eq("stripe_customer_id", stripe_customer_id)
     .single();
+
+  console.log(profile ? `hello profile: ${profile}` : "no profile");
 
   if (profile) {
     const updatedSubscription = {

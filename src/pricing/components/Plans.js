@@ -15,7 +15,6 @@ export default function Plans({ plans }) {
     setRedirecting(true);
     const response = await fetch(`${SITE_URL}/api/checkout/${plan.id}`);
     const data = await response.json();
-    console.log(data);
     const stripe = await loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     );
