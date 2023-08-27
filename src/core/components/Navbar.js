@@ -8,9 +8,6 @@ export default function Navbar() {
         <Logo />
       </Link>
       <div className="nav-menu">
-        <Link href="/login" className="nav-link white">
-          <div>Login</div>
-        </Link>
         <Link href="/pricing" className="nav-link black">
           <div>Pricing</div>
         </Link>

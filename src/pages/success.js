@@ -19,7 +19,7 @@ export default function SuccessPage() {
             Now you have full access to everything! <br />
             Ready to get started?
           </p>
-          <Link href="/login" className="large-button">
+          <Link href="/" className="large-button">
             <div className="large-button-text">Get started!</div>
           </Link>
         </div>
