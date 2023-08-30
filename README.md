@@ -1,53 +1,55 @@
-# Build a SaaS app with React
+# ChewStreet
+
+ChewStreet is a SaaS platform that offers courses in web development and design. Access premium educational content to boost your skills (practice project).
+
+## Table of Contents
+
+- [What It Is](#what-it-is)
+- [Technologies Used](#technologies-used)
+- [What I've Learned](#what-ive-learned)
+- [Challenges Faced](#challenges-faced)
+- [What Is Still There To Fix](#what-is-still-there-to-fix)
+
+## What It Is
+
+ChewStreet serves as an online platform for educational courses focused on web development and design. The aim is to provide a repository of high-quality educational resources.
 
 ## Technologies Used
 
-- Next.js (13), Supabase, Stripe, Vercel
+The project employs:
 
-## Tools Needed
+- **Next.js**: For frontend and server-side rendering capabilities.
+- **Tailwind CSS**: For styling components.
+- **Supabase**: Backend service for products and user management.
+- **Stripe**: Payment gateway.
 
-- [Node / NPM (Package Manager)](https://nodejs.org/)
-- [VSCode (Code Editor)](https://code.visualstudio.com/)
-- [Git / Github](https://git-scm.com/)
+## What I've Learned
 
-## Accounts Needed (100% Free)
+Working on this project has provided experience in:
 
-- [Supabase (Backend)](https://supabase.com)
-- [Stripe (Payments)](https://stripe.com)
-- [Vercel (Deployment)](https://vercel.com)
-- [Github (Continuous Deployment)](https://github.com)
+- Connecting and working with APIs, specifically for Supabase and Stripe.
+- Understanding how to manage products using Supabase.
+- Implementing a payment process with Stripe.
+- Gaining a deeper understanding of Next.js, and the different uses of server-side and client-side components.
 
-## Next.js Documentation
+## Challenges Faced
 
-- [Next.js Image](https://nextjs.org/docs/api-reference/next/image)
-- [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction)
-- [Next.js GetStaticPaths](https://nextjs.org/docs/basic-features/data-fetching/get-static-paths)
-- [Next.js GetStaticProps](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)
+The project had its fair share of challenges:
 
-## Stripe Documentation (Select Node.js in code snippets)
+- Managing connectivity between Supabase and Stripe.
+- Building store components using Supabase data.
+- Handling Supabase's product management system and related functionality.
 
-- [Stripe Checkout: Customer Portal](https://stripe.com/docs/billing/subscriptions/build-subscriptions#customer-portal)
-- [Stripe API: List all prices](https://stripe.com/docs/api/prices/list)
-- [Stripe API: Retrieve product](https://stripe.com/docs/api/products/retrieve)
-- [Stripe API: Retrieve Customer](https://stripe.com/docs/api/customers/retrieve)
-- [Stripe API: Create a Checkout Session](https://stripe.com/docs/api/checkout/sessions/create)
-- [Stripe API: Event Object for Webhooks](https://stripe.com/docs/api/events/object)
-- [Stripe API: Versioning](https://stripe.com/docs/upgrades#api-versions)
-- [Stripe Checkout: Billing Portal Settings](https://dashboard.stripe.com/test/settings/billing/portal)
+## What Is Still There To Fix
 
-## Supabase Documentation
+While the platform is operational, there are aspects that require attention:
 
-- [Supabase Next.js Auth Helpers](https://supabase.com/docs/guides/auth/auth-helpers/nextjs)
-- [Supabase Magic Link Login](https://supabase.com/docs/guides/auth/auth-magic-link)
-- [Supabase Auth Signout](https://supabase.com/docs/reference/javascript/auth-signout)
-- [Supabase RLS: Row Level Security](https://supabase.com/docs/guides/auth/row-level-security)
-- [Supabase Database Functions](https://supabase.com/docs/guides/database/functions)
-- [Supabase Database Triggers](https://supabase.com/docs/guides/auth/managing-user-data#using-triggers)
+- Struggling with connecting Supabase and Stripe consistently.
+- Various optimization needs are still pending.
+- It's a work-in-progress with a focus on fine-tuning the existing features.
 
-## Additional Info
+---
 
-- The logo font is "Bakbak One", a free Google font
-- All the images are included in the /assets folder in /public
-- Along with each image is its original .psd (Photoshop) file
-- Seed product data using the Supabase SQL editor from the seed.sql file (in this project)
-- Use VSCode to instantly install the recommended extensions for this project (listed in the .vscode folder in this project)
+## Contributing
+
+If you'd like to contribute, please open a pull request for minor changes. For major alterations, it's best to open an issue first.
