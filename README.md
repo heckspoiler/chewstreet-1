@@ -36,7 +36,7 @@ Working on this project has provided experience in:
 
 The project had its fair share of challenges:
 
-- Managing connectivity between Supabase and Stripe.
+- Managing connectivity between Supabase and Stripe (webhooks).
 - Building store components using Supabase data.
 - Handling Supabase's product management system and related functionality.
 
